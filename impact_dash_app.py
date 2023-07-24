@@ -9,22 +9,23 @@ st.set_page_config(page_title='Dashboard de impacto Inovativa',
 df = pd.read_csv('Dados_Hub.csv')
 
 
-
 # Arrumando alguns dados
 
 # Lista de palavras a serem verificadas
 palavras = ['crescimento', 'Operação', 'Validação']
 
 # Defina a função de substituição
+
+
 def substituir_palavra(frase):
     for palavra in palavras:
         if palavra in frase:
             return palavra
     return frase
 
+
 # Aplica a substituição na coluna 'fase_apos_programa'
 df['fase_apos_programa'] = df['fase_apos_programa'].apply(substituir_palavra)
-
 
 
 # -------SIDEBAR----------------
@@ -86,17 +87,19 @@ total_empregos = df_selecttion['empregos_gerados'].sum()
 # grafico de gauge com a variável satisfacao_metodologia
 
 
-import pandas as pd
-
 def calcular_media_categorias(df, coluna):
     df[coluna] = pd.Categorical(df[coluna])
     niveis_categorias = df[coluna].cat.categories
     media_valores = round((df[coluna].cat.codes + 1).mean(), 2)
     return media_valores
 
-media_valores_rating = calcular_media_categorias(df_selecttion, 'satisfacao_metodologia')
 
-media_valores_acelerar_negocio = ":star:" * int(round(calcular_media_categorias(df_selecttion, df_selecttion.columns[9])))
+media_valores_rating = calcular_media_categorias(
+    df_selecttion, 'satisfacao_metodologia')
+
+media_valores_acelerar_negocio = ":star:" * \
+    int(round(calcular_media_categorias(
+        df_selecttion, df_selecttion.columns[9])))
 
 star_rating = ":star:" * int(round(media_valores_rating, 0))
 
@@ -104,46 +107,49 @@ star_rating = ":star:" * int(round(media_valores_rating, 0))
 
 total_conexoes = df_selecttion['fez_conexoes'].value_counts()['Sim']
 
-left_column, midle_column, right_column, far_right, far_far_right = st.columns(5)
+left_column, midle_column, right_column, far_right, far_far_right = st.columns(
+    5)
 
 with far_far_right:
     st.subheader(f':people_hugging:{total_participantes}' '  Participantes')
 
 with midle_column:
-    st.subheader( f':office_worker:{total_empregos}' '  Novos empregos gerados')
+    st.subheader(f':office_worker:{total_empregos}' '  Novos empregos gerados')
 
 
 with right_column:
-    st.subheader(':heavy_dollar_sign: Aumento médio de  'f'{media_faturamento}%' '  no faturamento')
+    st.subheader(
+        ':heavy_dollar_sign: Aumento médio de  'f'{media_faturamento}%' '  no faturamento')
 
 
 with far_right:
-    st.subheader( f':phone:{total_conexoes}'' novas conexões criadas')
+    st.subheader(f':phone:{total_conexoes}'' novas conexões criadas')
 
 with left_column:
-    st.subheader(f' Avaliação da metodologia: {star_rating}') 
+    st.subheader(f' Avaliação da metodologia: {star_rating}')
 
 st.markdown('---')
 
 # importancias
-left_column, midle_column, right_column, far_right, far_far_right = st.columns(5)
+left_column, midle_column, right_column, far_right, far_far_right = st.columns(
+    5)
 
 with left_column:
-    st.subheader('Importância da participação:') 
-    st.subheader(f'{media_valores_acelerar_negocio}') 
+    st.subheader('Importância da participação:')
+    st.subheader(f'{media_valores_acelerar_negocio}')
 
 st.markdown('---')
 
 # grafico de barra com as variaveis de variação de faturamento e fez_conexoes
 
 grafico_barra_fat = px.bar(df_selecttion,
-                       x='fez_conexoes',
-                       y='variacao_faturamento',
-                       color='ramo',
-                       color_discrete_sequence=px.colors.qualitative.Pastel,
-                       template='plotly_white',
-                       title='<b>Variação de faturamento x Fez conexões</b>'
-                       )
+                           x='fez_conexoes',
+                           y='variacao_faturamento',
+                           color='ramo',
+                           color_discrete_sequence=px.colors.qualitative.Pastel,
+                           template='plotly_white',
+                           title='<b>Variação de faturamento x Fez conexões</b>'
+                           )
 grafico_barra_fat.update_layout(
     xaxis_title='Fez conexões?',
     yaxis_title='Variação de faturamento (%)',
@@ -161,7 +167,7 @@ grafico_barra_fat.update_layout(
 # grafico de barra com a contagem de fase_apos_programa
 
 grafico_barra_fase = px.bar(df_selecttion,
-                          y='fase_apos_programa',
+                            y='fase_apos_programa',
                             color_discrete_sequence=px.colors.qualitative.Pastel,
                             template='plotly_white',
                             title='<b>Fase após o programa</b>'
@@ -180,21 +186,11 @@ grafico_barra_fase.update_layout(
     ))
 
 
-
-                       
-
-
-
-
-
 col1, col2, col3 = st.columns(3)
 with col1:
     st.plotly_chart(grafico_barra_fat, use_container_width=False)
 with col2:
     st.plotly_chart(grafico_barra_fase, use_container_width=False)
-
-
-
 
 
 # st.dataframe(df_selecttion)
