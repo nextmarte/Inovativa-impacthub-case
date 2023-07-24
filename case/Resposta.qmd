@@ -9,16 +9,19 @@ editor: visual
 
 ## Contexto
 
-Este relatório tem como objetivo apresentar uma análise exploratória dos dados disponibilizados pela equipe de recrutamento do ImpactHub Floripa. O relatório foi elaborado usando as linguagems R e python com sistema QUARTO. Também foi desenvolvido um app dashboard usando o framework streamlit em python para visualização de alguns dos indicadores identificados. Os arquivos resultantes estão disponíveis no repositório do github.
+Este relatório tem como objetivo apresentar uma análise exploratória dos dados disponibilizados pela equipe de recrutamento do ImpactHub Floripa. O relatório foi elaborado usando as linguagens R e python com sistema QUARTO. Também foi desenvolvido um app dashboard usando o framework streamlit em python para visualização de alguns dos indicadores identificados. Os arquivos resultantes estão disponíveis no repositório do GitHub.
+
+Escolhi fazer o dashboard em streamlit (python) e não em PowerBi ou Shiny(R) porque essa é uma tecnologia que estou aprendendo e queria testar o que aprendi até agora. 
 
 Dashboard: <https://inovativa-impacth.streamlit.app/>
 
-Github: <https://github.com/nextmarte/Inovativa-impacthub-case>
+GitHub: <https://github.com/nextmarte/Inovativa-impacthub-case>
 
 ## Visão dos dados
 
-A tabela disponibilizada possui 50 observações e 19 variáveis. Os dados foram baixados diretamente da planilha google disponibilizada pela equipe de recrutamento usando um script em R. Foi calculada uma nova variável para mensurar a variação no faturamento dos participantes, além disso, alguns rótulos foram modificados para facilitar a manipulação e plotagem dos dados.
+A tabela disponibilizada possui 50 observações e 19 variáveis. Os dados foram baixados diretamente da planilha google disponibilizada pela equipe de recrutamento usando um script em R, em seguida foram limpos com o pacote janitor, removendo espaços e caracteres especiais dos nomes das variáveis. Foi calculada uma nova variável para mensurar a variação no faturamento dos participantes, além disso, alguns rótulos foram modificados para facilitar a manipulação e plotagem dos dados.
 
+Exemplo com as 8 primeiras variáveis:
 ```{r}
 #| echo: false
 #| message: false
@@ -31,13 +34,15 @@ library(readr)
 Dados_Hub <-
     read_csv(csvfile)
 
+head(names(Dados_Hub), 8)
+
 ```
 
 Os dados são em sua maioria categóricos pois descrevem as características dos participantes e suas percepções sobre a participação no programa, porém, existem dados numéricos relacionados a faturamento e empregos gerados.
 
 ## Questão 1 - Dashboard para visualização dos dados
 
-O dashboard foi desenvolvido usando o framework streamlit em python e apresenta alguns dos indicadores indentificados na análise exploratória.
+O dashboard foi desenvolvido usando o framework streamlit em python e apresenta alguns dos indicadores identificados na análise exploratória.
 
 Dashboard: <https://inovativa-impacth.streamlit.app/>
 
@@ -47,15 +52,15 @@ Do lado esquerdo da página encontram-se alguns filtros selecionados para realiz
 
 ![](images/paste-1.png)
 
--   Os indicadores de satisfação e importância foram calculados como a média da avaliação dos partcipantes e varia com o filtro.
+-   Os indicadores de satisfação e importância foram calculados como a média da avaliação dos participantes e varia com o filtro.
 
 -   O indicador de empregos gerados é uma contagem do total de empregos e varia com o filtro.
 
--   O índice de aumento médio de faturamento após o programa foi calculado como a média da variação de todos os particpantes.
+-   O índice de aumento médio de faturamento após o programa foi calculado como a média da variação de todos os participantes.
 
 -   O número de conexões geradas é a contagem total de conexões de acordo com a resposta dos participantes, que responderam sim ou não para a pergunta que indaga se eles fizeram alguma conexão durante o programa.
 
--   O número de particpantes também é uma contagem e varia com os filtros.
+-   O número de participantes também é uma contagem e varia com os filtros.
 
 # Questão 2 - Análise dos dados
 
@@ -64,11 +69,11 @@ As avaliações só variam negativamente dentro do grupo de gênero outros ou n�
 
 Um ponto de destaque foi a importância das conexões feitas durante o programa e que aparentemente teve impacto no aumento do faturamento dos participantes, pois o índice de aumento médio de faturamento foi maior para os participantes que fizeram conexões durante o programa.
 
-Os outros indicadores de desempenho também tiveram um bo resultado, como o aumento do faturamento medio após o programa, porém, é importante ressaltar que foi possível verificar a presença de outliers que podem ter influenciado o resultado. Mesmo assim o resultado é expressivo e mostra que o programa teve um impacto positivo no faturamento dos participantes. Os impactos mais notáveis são percebidos na categoria de negócio varejo, quando o negócio é conduzido por mulheres.
+Os outros indicadores de desempenho também tiveram um bo resultado, como o aumento do faturamento médio após o programa, porém, é importante ressaltar que foi possível verificar a presença de outliers que podem ter influenciado o resultado. Mesmo assim o resultado é expressivo e mostra que o programa teve um impacto positivo no faturamento dos participantes. Os impactos mais notáveis são percebidos na categoria de negócio varejo, quando o negócio é conduzido por mulheres.
 
 ## Pontos com potencial para melhorias
 
 - Aumentar a diversidade de gênero e raça ao buscar empreendedores que façam parte de grupos minoritários que geralmente são excluídos do ecossistema de inovação. Isso pode ser feito através de parcerias com outros programas de aceleração que tenham como foco a inclusão de grupos minoritários como ocorre na cidade de Maricá no Rio de Janeiro com o programas de aceleração de mulheres empreendedoras e escola de startups que acontece através de parcerias entre governo, universidades e comunidades.
-- Estender ou adaptar a acelaração para atender outros ramos ou setores de negócio.
+- Estender ou adaptar a aceleração para atender outros ramos ou setores de negócio.
 - Na análise exploratória não foi possível definir se o método online é melhor ou pior que o presencial devido ao número de dados disponíveis, porém, é possível que o método online tenha um impacto negativo na geração de conexões entre os participantes, pois a interação entre os participantes é menor. Uma forma de melhorar isso seria criar um ambiente virtual para interação entre os participantes, como um fórum ou rede social.
 - Aumentar o número de participantes para que seja possível realizar uma análise mais robusta dos dados e identificar outros pontos de melhoria.
