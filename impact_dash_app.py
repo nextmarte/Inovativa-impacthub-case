@@ -8,7 +8,6 @@ st.set_page_config(page_title='Dashboard de impacto Inovativa',
 
 df = pd.read_csv('Dados_Hub.csv')
 
-
 # Arrumando alguns dados
 
 # Lista de palavras a serem verificadas
@@ -30,39 +29,36 @@ df['fase_apos_programa'] = df['fase_apos_programa'].apply(substituir_palavra)
 
 # -------SIDEBAR----------------
 #st.sidebar.image('inovativa.png', width=300)
-st.sidebar.header('Selecione seus filtros:')
+st.sidebar.markdown("<h1 style='text-align: center; color: white'> Selecione seus filtros:",unsafe_allow_html=True)
 
 
+
+st.sidebar.markdown("<h3 style='text-align: center; color: white'> localização",unsafe_allow_html=True)
 localizacao = st.sidebar.multiselect(
-    'Selecione a localização',
+    '',
     options=df["localizacao"].unique(),
-    default=df["localizacao"].unique()
+    default=df["localizacao"].unique(),
 )
 
+st.sidebar.markdown("<h3 style='text-align: center; color: white'> Gênero",unsafe_allow_html=True)
+
 genero = st.sidebar.multiselect(
-    'Selecione o gênero dos participantes',
+    ' ',
     options=df["genero"].unique(),
     default=df["genero"].unique()
 )
-
+st.sidebar.markdown("<h3 style='text-align: center; color: white'> Ramo",unsafe_allow_html=True)
 ramo = st.sidebar.multiselect(
-    'Selecione o ramo de atuação',
+    ' ',
     options=df["ramo"].unique(),
     default=df["ramo"].unique()
 )
-
+st.sidebar.markdown("<h3 style='text-align: center; color: white'> Escolaridade",unsafe_allow_html=True)
 escolaridade = st.sidebar.multiselect(
-    'Selecione a escolaridade',
+    ' ',
     options=df["escolaridade"].unique(),
     default=df["escolaridade"].unique()
 )
-
-# faturamento_antes = st.sidebar.slider(
-#     'Selecione o faturamento antes do programa',
-#     min_value=df["faturamento_antes_do_programa"].min(),
-#     max_value=df["faturamento_antes_do_programa"].max(),
-#     default=(df["faturamento_antes_do_programa"].min(), df["faturamento_antes_do_programa"].max())
-# )
 
 
 df_selecttion = df.query(
@@ -72,11 +68,10 @@ df_selecttion = df.query(
 
 # -------MAIN----------------
 
-
-st.markdown(" .<h1 style='text-align: center;font-size:120px'>  Dashboard de impacto INOVATIVA :bar_chart: </h1>",
+st.markdown(" .<h1 style='text-align: center'>  Dashboard de impacto INOVATIVA :bar_chart: </h1>",
              unsafe_allow_html=True) 
 
-st.markdown('##')
+
 st.markdown('---')
 
 
@@ -117,8 +112,8 @@ star_rating = ":star:" * int(round(media_valores_rating, 0))
 
 total_conexoes = df_selecttion['fez_conexoes'].value_counts()['Sim']
 
-left_column, midle_column, right_column, far_right, far_far_right = st.columns(
-    5)
+left_column, left_column2, midle_column, right_column, far_right, far_far_right = st.columns(
+    6)
 
 with far_far_right:
     st.subheader(f':people_hugging:{total_participantes}' '  Participantes')
@@ -136,7 +131,12 @@ with far_right:
     st.subheader(f':phone:{total_conexoes}'' novas conexões criadas')
 
 with left_column:
-    st.subheader(f' Avaliação da metodologia: {star_rating}')
+    st.subheader('Satisfação com a metodologia:')
+    st.subheader(f' {star_rating}')
+
+with left_column2:
+    st.subheader('Importância da participação:')
+    st.subheader(f'{media_valores_acelerar_negocio}')
 
 st.markdown('---')
 
@@ -144,11 +144,12 @@ st.markdown('---')
 left_column, midle_column, right_column, far_right, far_far_right = st.columns(
     5)
 
-with left_column:
-    st.subheader('Importância da participação:')
-    st.subheader(f'{media_valores_acelerar_negocio}')
 
-st.markdown('---')
+
+#Importancia da participação grafico pizza
+
+
+
 
 # grafico de barra com as variaveis de variação de faturamento e fez_conexoes
 
@@ -168,7 +169,7 @@ grafico_barra_fat.update_layout(
     plot_bgcolor="rgba(0,0,0,0)",
     yaxis=(dict(showgrid=False)),
     font=dict(
-        family='Montserrat',
+        family='verdana',
         size=12,
         color='black'
     ))
@@ -190,7 +191,7 @@ grafico_barra_fase.update_layout(
     plot_bgcolor="rgba(0,0,0,0)",
     yaxis=(dict(showgrid=False)),
     font=dict(
-        family='Montserrat',
+        family='verdana',
         size=12,
         color='black'
     ))
@@ -213,18 +214,38 @@ grafico_empregos.update_layout(
     plot_bgcolor="rgba(0,0,0,0)",
     yaxis=(dict(showgrid=False)),
     font=dict(
-        family='Montserrat',
+        family='verdana',
         size=12,
         color='black'
     ))
 
+grafico_importancia = px.bar(df_selecttion,
+                                x=df_selecttion.columns[9],
+                                y='ramo',
+                                color='ramo',
+                                color_discrete_sequence=px.colors.qualitative.Pastel,
+                                template='plotly_white',
+                                title='<b>Importância da participação</b>'
+                                )
+grafico_importancia.update_layout(
+    xaxis_title='Importância',
+    yaxis_title='Setor',
+    legend_title='Setor',
+    title_x=0.5,
+    plot_bgcolor="rgba(0,0,0,0)",
+    yaxis=(dict(showgrid=False)),
+    font=dict(
+        family='verdana',
+        size=12,
+        color='black'
+    ))
 
+col0, col1, col3 = st.columns(3)
 
-col1, col2, col3 = st.columns(3)
+with col0:
+    st.plotly_chart(grafico_importancia, use_container_width=False)
 with col1:
     st.plotly_chart(grafico_barra_fat, use_container_width=False)
-with col2:
-    st.plotly_chart(grafico_barra_fase, use_container_width=False)
 with col3:
     st.plotly_chart(grafico_empregos, use_container_width=False)
 
@@ -240,3 +261,5 @@ hide_st_style = """
             </style>
             """
 st.markdown(hide_st_style, unsafe_allow_html=True)
+
+st.markdown('---')
