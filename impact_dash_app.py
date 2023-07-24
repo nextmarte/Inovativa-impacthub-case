@@ -29,8 +29,9 @@ df['fase_apos_programa'] = df['fase_apos_programa'].apply(substituir_palavra)
 
 
 # -------SIDEBAR----------------
-
+st.sidebar.image('inovativa.png', width=300)
 st.sidebar.header('Selecione seus filtros:')
+
 
 localizacao = st.sidebar.multiselect(
     'Selecione a localização',
@@ -56,15 +57,24 @@ escolaridade = st.sidebar.multiselect(
     default=df["escolaridade"].unique()
 )
 
+# faturamento_antes = st.sidebar.slider(
+#     'Selecione o faturamento antes do programa',
+#     min_value=df["faturamento_antes_do_programa"].min(),
+#     max_value=df["faturamento_antes_do_programa"].max(),
+#     default=(df["faturamento_antes_do_programa"].min(), df["faturamento_antes_do_programa"].max())
+# )
+
+
 df_selecttion = df.query(
-    "localizacao == @localizacao & genero == @genero & ramo == @ramo"
+    "localizacao == @localizacao & genero == @genero & ramo == @ramo & escolaridade == @escolaridade"
 )
 
 
 # -------MAIN----------------
 
 
-st.title(':bar_chart: Dashboard de impacto Inovativa :chart:')
+st.markdown(" ![](inovativa.png) <h1 style='text-align: center;font-size:120px'>  Dashboard de impacto INOVATIVA :bar_chart: </h1>",
+             unsafe_allow_html=True) 
 
 st.markdown('##')
 st.markdown('---')
@@ -90,7 +100,7 @@ total_empregos = df_selecttion['empregos_gerados'].sum()
 def calcular_media_categorias(df, coluna):
     df[coluna] = pd.Categorical(df[coluna])
     niveis_categorias = df[coluna].cat.categories
-    media_valores = round((df[coluna].cat.codes + 1).mean(), 2)
+    media_valores = round((df[coluna].cat.codes + 3).mean(), 2)
     return media_valores
 
 
@@ -185,12 +195,38 @@ grafico_barra_fase.update_layout(
         color='black'
     ))
 
+# grafico empregos gerados por setor
+
+grafico_empregos = px.bar(df_selecttion,
+                            x='ramo',
+                            y='empregos_gerados',
+                            color='ramo',
+                            color_discrete_sequence=px.colors.qualitative.Pastel,
+                            template='plotly_white',
+                            title='<b>Empregos gerados por setor</b>'
+                            )
+grafico_empregos.update_layout(
+    xaxis_title='Setor',
+    yaxis_title='Empregos gerados',
+    legend_title='Setor',
+    title_x=0.5,
+    plot_bgcolor="rgba(0,0,0,0)",
+    yaxis=(dict(showgrid=False)),
+    font=dict(
+        family='Montserrat',
+        size=12,
+        color='black'
+    ))
+
+
 
 col1, col2, col3 = st.columns(3)
 with col1:
     st.plotly_chart(grafico_barra_fat, use_container_width=False)
 with col2:
     st.plotly_chart(grafico_barra_fase, use_container_width=False)
+with col3:
+    st.plotly_chart(grafico_empregos, use_container_width=False)
 
 
 # st.dataframe(df_selecttion)
