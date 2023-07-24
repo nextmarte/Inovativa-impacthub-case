@@ -1,5 +1,5 @@
 ---
-title: "Estudo de caso Inovativa: ImpactHub Floripa"
+title: "Desafio técnico Inovativa: ImpactHub Floripa"
 author: "Candidato: Marcus Antonio Cardoso Ramalho"
 date: "24/07/2023"
 format: pdf
