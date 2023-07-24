@@ -161,6 +161,15 @@ grafico_barra_fat = px.bar(df_selecttion,
                            template='plotly_white',
                            title='<b>Variação de faturamento x Fez conexões</b>'
                            )
+#mudandno a posi;'ao da legenda
+grafico_barra_fat.update_layout(legend=dict(
+    orientation="h",
+    yanchor="bottom",
+    y=1.02,
+    xanchor="right",
+    x=1
+))
+
 grafico_barra_fat.update_layout(
     xaxis_title='Fez conexões?',
     yaxis_title='Variação de faturamento (%)',
@@ -172,7 +181,15 @@ grafico_barra_fat.update_layout(
         family='verdana',
         size=12,
         color='black'
+    ),
+    legend=dict(
+        orientation="h",
+        yanchor="bottom",
+        y=1.02,
+        xanchor="right",
+        x=1
     ))
+
 
 
 # grafico de barra com a contagem de fase_apos_programa
@@ -194,7 +211,15 @@ grafico_barra_fase.update_layout(
         family='verdana',
         size=12,
         color='black'
+    ),
+    legend=dict(
+        orientation="h",
+        yanchor="bottom",
+        y=1.02,
+        xanchor="right",
+        x=1
     ))
+    
 
 # grafico empregos gerados por setor
 
@@ -217,19 +242,27 @@ grafico_empregos.update_layout(
         family='verdana',
         size=12,
         color='black'
+    ),
+    legend=dict(
+        orientation="h",
+        yanchor="bottom",
+        y=1.02,
+        xanchor="right",    
+        x=1
     ))
+    
 
 grafico_importancia = px.bar(df_selecttion,
-                                x=df_selecttion.columns[9],
-                                y='ramo',
+                                x='localizacao',
+                                y='variacao_faturamento',
                                 color='ramo',
                                 color_discrete_sequence=px.colors.qualitative.Pastel,
                                 template='plotly_white',
-                                title='<b>Importância da participação</b>'
+                                title='<b>Variação do faturamento por localização</b>'
                                 )
 grafico_importancia.update_layout(
-    xaxis_title='Importância',
-    yaxis_title='Setor',
+    xaxis_title='localização',
+    yaxis_title='variação média do faturamento',
     legend_title='Setor',
     title_x=0.5,
     plot_bgcolor="rgba(0,0,0,0)",
@@ -238,7 +271,15 @@ grafico_importancia.update_layout(
         family='verdana',
         size=12,
         color='black'
+    ),
+    legend=dict(
+        orientation="h",
+        yanchor="bottom",
+        y=1.02,
+        xanchor="right",
+        x=1
     ))
+
 
 col0, col1, col3 = st.columns(3)
 
