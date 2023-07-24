@@ -63,7 +63,7 @@ df_selecttion = df.query(
 # -------MAIN----------------
 
 
-st.title(':bar_chart: Dashboard de impacto Inovativa')
+st.title(':bar_chart: Dashboard de impacto Inovativa :chart:')
 
 st.markdown('##')
 st.markdown('---')
@@ -83,25 +83,54 @@ media_faturamento = round(df_selecttion['variacao_faturamento'].mean()*100)
 
 total_empregos = df_selecttion['empregos_gerados'].sum()
 
+# grafico de gauge com a variável satisfacao_metodologia
+
+
+import pandas as pd
+
+def calcular_media_categorias(df, coluna):
+    df[coluna] = pd.Categorical(df[coluna])
+    niveis_categorias = df[coluna].cat.categories
+    media_valores = round((df[coluna].cat.codes + 1).mean(), 2)
+    return media_valores
+
+media_valores_rating = calcular_media_categorias(df_selecttion, 'satisfacao_metodologia')
+
+media_valores_acelerar_negocio = ":star:" * int(round(calcular_media_categorias(df_selecttion, df_selecttion.columns[9])))
+
+star_rating = ":star:" * int(round(media_valores_rating, 0))
+
 # contagem de conexoes feitas == sim
 
 total_conexoes = df_selecttion['fez_conexoes'].value_counts()['Sim']
 
-left_column, midle_column, right_column, far_right = st.columns(4)
+left_column, midle_column, right_column, far_right, far_far_right = st.columns(5)
 
-with left_column:
-    st.subheader(f':people_hugging:{total_participantes}' '  participantes')
+with far_far_right:
+    st.subheader(f':people_hugging:{total_participantes}' '  Participantes')
 
 with midle_column:
-    st.subheader( f':office_worker:{total_empregos}' '  Empregos gerados')
+    st.subheader( f':office_worker:{total_empregos}' '  Novos empregos gerados')
 
 
 with right_column:
-    st.subheader(':heavy_dollar_sign: Aumento médio de  'f'{media_faturamento} %' ' no faturamento')
+    st.subheader(':heavy_dollar_sign: Aumento médio de  'f'{media_faturamento}%' '  no faturamento')
 
 
 with far_right:
     st.subheader( f':phone:{total_conexoes}'' novas conexões criadas')
+
+with left_column:
+    st.subheader(f' Avaliação da metodologia: {star_rating}') 
+
+st.markdown('---')
+
+# importancias
+left_column, midle_column, right_column, far_right, far_far_right = st.columns(5)
+
+with left_column:
+    st.subheader('Importância da participação:') 
+    st.subheader(f'{media_valores_acelerar_negocio}') 
 
 st.markdown('---')
 
@@ -120,10 +149,10 @@ grafico_barra_fat.update_layout(
     yaxis_title='Variação de faturamento (%)',
     legend_title='Ramo de atuação',
     title_x=0.5,
-    plot_bgcolor='white',
+    plot_bgcolor="rgba(0,0,0,0)",
     yaxis=(dict(showgrid=False)),
     font=dict(
-        family='Arial',
+        family='Montserrat',
         size=12,
         color='black'
     ))
@@ -142,27 +171,40 @@ grafico_barra_fase.update_layout(
     yaxis_title='Fase após o programa',
     legend_title='Fase após o programa',
     title_x=0.5,
-    plot_bgcolor='white',
+    plot_bgcolor="rgba(0,0,0,0)",
     yaxis=(dict(showgrid=False)),
     font=dict(
-        family='Arial',
+        family='Montserrat',
         size=12,
         color='black'
     ))
 
-# grafico de gauge com a variável satisfacao_metodologia
+
 
                        
 
 
-main_left_column, main_right_column = st.columns(2)
 
 
-col1, col2 = st.columns(2)
+
+col1, col2, col3 = st.columns(3)
 with col1:
     st.plotly_chart(grafico_barra_fat, use_container_width=False)
 with col2:
     st.plotly_chart(grafico_barra_fase, use_container_width=False)
 
 
-st.dataframe(df_selecttion)
+
+
+
+# st.dataframe(df_selecttion)
+
+# ---- HIDE STREAMLIT STYLE ----
+hide_st_style = """
+            <style>
+            #MainMenu {visibility: hidden;}
+            footer {visibility: hidden;}
+            header {visibility: hidden;}
+            </style>
+            """
+st.markdown(hide_st_style, unsafe_allow_html=True)
