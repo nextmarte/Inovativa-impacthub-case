@@ -29,7 +29,7 @@ df['fase_apos_programa'] = df['fase_apos_programa'].apply(substituir_palavra)
 
 
 # -------SIDEBAR----------------
-st.sidebar.image('inovativa.png', width=300)
+#st.sidebar.image('inovativa.png', width=300)
 st.sidebar.header('Selecione seus filtros:')
 
 
