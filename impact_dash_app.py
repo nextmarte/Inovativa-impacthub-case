@@ -73,7 +73,7 @@ df_selecttion = df.query(
 # -------MAIN----------------
 
 
-st.markdown(" ![](inovativa.png) <h1 style='text-align: center;font-size:120px'>  Dashboard de impacto INOVATIVA :bar_chart: </h1>",
+st.markdown(" .<h1 style='text-align: center;font-size:120px'>  Dashboard de impacto INOVATIVA :bar_chart: </h1>",
              unsafe_allow_html=True) 
 
 st.markdown('##')
