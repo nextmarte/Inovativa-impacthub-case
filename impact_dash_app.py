@@ -6,6 +6,17 @@ st.set_page_config(page_title='Dashboard de impacto Inovativa',
                    page_icon=':game_die:',
                    layout='wide')
 
+streamlit_style = """
+			<style>
+			@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@100&display=swap');
+
+			html, body, [class*="css"]  {
+			font-family: 'Roboto', sans-serif;
+			}
+			</style>
+			"""
+st.markdown(streamlit_style, unsafe_allow_html=True)
+
 df = pd.read_csv('Dados_Hub.csv')
 
 # Arrumando alguns dados
@@ -28,32 +39,36 @@ df['fase_apos_programa'] = df['fase_apos_programa'].apply(substituir_palavra)
 
 
 # -------SIDEBAR----------------
-#st.sidebar.image('inovativa.png', width=300)
-st.sidebar.markdown("<h1 style='text-align: center; color: white'> Selecione seus filtros:",unsafe_allow_html=True)
+# st.sidebar.image('inovativa.png', width=300)
+st.sidebar.markdown(
+    "<h1 style='text-align: center; color: white'> Selecione seus filtros:", unsafe_allow_html=True)
 
 
-
-st.sidebar.markdown("<h3 style='text-align: center; color: white'> localização",unsafe_allow_html=True)
+st.sidebar.markdown(
+    "<h3 style='text-align: center; color: white'> localização", unsafe_allow_html=True)
 localizacao = st.sidebar.multiselect(
     '',
     options=df["localizacao"].unique(),
     default=df["localizacao"].unique(),
 )
 
-st.sidebar.markdown("<h3 style='text-align: center; color: white'> Gênero",unsafe_allow_html=True)
+st.sidebar.markdown(
+    "<h3 style='text-align: center; color: white'> Gênero", unsafe_allow_html=True)
 
 genero = st.sidebar.multiselect(
     ' ',
     options=df["genero"].unique(),
     default=df["genero"].unique()
 )
-st.sidebar.markdown("<h3 style='text-align: center; color: white'> Ramo",unsafe_allow_html=True)
+st.sidebar.markdown(
+    "<h3 style='text-align: center; color: white'> Ramo", unsafe_allow_html=True)
 ramo = st.sidebar.multiselect(
     ' ',
     options=df["ramo"].unique(),
     default=df["ramo"].unique()
 )
-st.sidebar.markdown("<h3 style='text-align: center; color: white'> Escolaridade",unsafe_allow_html=True)
+st.sidebar.markdown(
+    "<h3 style='text-align: center; color: white'> Escolaridade", unsafe_allow_html=True)
 escolaridade = st.sidebar.multiselect(
     ' ',
     options=df["escolaridade"].unique(),
@@ -69,7 +84,7 @@ df_selecttion = df.query(
 # -------MAIN----------------
 
 st.markdown(" .<h1 style='text-align: center'>  Dashboard de impacto INOVATIVA :bar_chart: </h1>",
-             unsafe_allow_html=True) 
+            unsafe_allow_html=True)
 
 
 st.markdown('---')
@@ -145,10 +160,7 @@ left_column, midle_column, right_column, far_right, far_far_right = st.columns(
     5)
 
 
-
-#Importancia da participação grafico pizza
-
-
+# Importancia da participação grafico pizza
 
 
 # grafico de barra com as variaveis de variação de faturamento e fez_conexoes
@@ -161,7 +173,7 @@ grafico_barra_fat = px.bar(df_selecttion,
                            template='plotly_white',
                            title='<b>Variação de faturamento x Fez conexões</b>'
                            )
-#mudandno a posi;'ao da legenda
+# mudandno a posi;'ao da legenda
 grafico_barra_fat.update_layout(legend=dict(
     orientation="h",
     yanchor="bottom",
@@ -191,7 +203,6 @@ grafico_barra_fat.update_layout(
     ))
 
 
-
 # grafico de barra com a contagem de fase_apos_programa
 
 grafico_barra_fase = px.bar(df_selecttion,
@@ -219,18 +230,18 @@ grafico_barra_fase.update_layout(
         xanchor="right",
         x=1
     ))
-    
+
 
 # grafico empregos gerados por setor
 
 grafico_empregos = px.bar(df_selecttion,
-                            x='ramo',
-                            y='empregos_gerados',
-                            color='ramo',
-                            color_discrete_sequence=px.colors.qualitative.Pastel,
-                            template='plotly_white',
-                            title='<b>Empregos gerados por setor</b>'
-                            )
+                          x='ramo',
+                          y='empregos_gerados',
+                          color='ramo',
+                          color_discrete_sequence=px.colors.qualitative.Pastel,
+                          template='plotly_white',
+                          title='<b>Empregos gerados por setor</b>'
+                          )
 grafico_empregos.update_layout(
     xaxis_title='Setor',
     yaxis_title='Empregos gerados',
@@ -247,19 +258,19 @@ grafico_empregos.update_layout(
         orientation="h",
         yanchor="bottom",
         y=1.02,
-        xanchor="right",    
+        xanchor="right",
         x=1
     ))
-    
+
 
 grafico_importancia = px.bar(df_selecttion,
-                                x='localizacao',
-                                y='variacao_faturamento',
-                                color='ramo',
-                                color_discrete_sequence=px.colors.qualitative.Pastel,
-                                template='plotly_white',
-                                title='<b>Variação do faturamento por localização</b>'
-                                )
+                             x='localizacao',
+                             y='variacao_faturamento',
+                             color='ramo',
+                             color_discrete_sequence=px.colors.qualitative.Pastel,
+                             template='plotly_white',
+                             title='<b>Variação do faturamento por localização</b>'
+                             )
 grafico_importancia.update_layout(
     xaxis_title='localização',
     yaxis_title='variação média do faturamento',
